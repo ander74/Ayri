@@ -1,4 +1,4 @@
-﻿namespace ScanningService.Models;
+﻿namespace Ayri.ScanningService.Models;
 
 /// <summary>
 /// This class represents an scanning device in this service.

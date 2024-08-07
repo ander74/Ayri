@@ -1,5 +1,5 @@
 ﻿
-namespace ScanningService.Models;
+namespace Ayri.ScanningService.Models;
 
 /// <summary>
 /// This class has the scan properties a device use for aquire an image.

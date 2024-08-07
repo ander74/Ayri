@@ -1,7 +1,7 @@
-﻿using ScanningService.Models;
+﻿using Ayri.ScanningService.Models;
 using WIA;
 
-namespace ScanningService;
+namespace Ayri.ScanningService;
 
 /// <summary>
 /// This service helps in the scanning image process acting as intermediator between an application and the COM scanning component of Windows.

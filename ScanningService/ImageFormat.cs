@@ -1,4 +1,4 @@
-﻿namespace ScanningService;
+﻿namespace Ayri.ScanningService;
 
 /// <summary>
 /// Image formats supported by scanning devices.
