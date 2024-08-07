@@ -1,9 +1,16 @@
-﻿namespace ScanningService.Models;
+﻿
+namespace ScanningService.Models;
 
 /// <summary>
 /// This class has the scan properties a device use for aquire an image.
 /// </summary>
 public class ScanProperties {
+
+    /// <summary>
+    /// Sets or gets the image format for the scanned image.<br/>
+    /// Initial value: JPEG
+    /// </summary>
+    public ImageFormat ImageFormat { get; set; } = ImageFormat.JPEG;
 
     /// <summary>
     /// Posible values: 0=Unspecified; 1=Color; 2=Grayscale; 4=Black and white text.<br/>

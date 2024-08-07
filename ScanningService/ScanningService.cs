@@ -73,22 +73,13 @@ public class ScanningService {
     public byte[] Scan(string deviceId, ScanProperties properties) {
         if (selectedScanner is null || selectedScanner.DeviceID != deviceId) {
             SelectScanner(deviceId);
+            if (selectedScanner is null) return [];
         }
-        if (selectedScanner is null) return [];
         Device device = selectedScanner.Connect();
         Item item = device.Items[1];
-        SetWIAProperty(item, WIA_SCAN_COLOR_MODE, properties.ColorMode);
-        SetWIAProperty(item, WIA_SCAN_BITS_PER_PIXEL, properties.BitsPerPixel);
-        SetWIAProperty(item, WIA_HORIZONTAL_SCAN_RESOLUTION_DPI, properties.Resolution);
-        SetWIAProperty(item, WIA_VERTICAL_SCAN_RESOLUTION_DPI, properties.Resolution);
-        SetWIAProperty(item, WIA_HORIZONTAL_SCAN_START_PIXEL, MilimetersToPixels(properties.HorizontalStart, properties.Resolution));
-        SetWIAProperty(item, WIA_VERTICAL_SCAN_START_PIXEL, MilimetersToPixels(properties.VerticalStart, properties.Resolution));
-        SetWIAProperty(item, WIA_HORIZONTAL_SCAN_SIZE_PIXELS, MilimetersToPixels(properties.HorizontalSize, properties.Resolution));
-        SetWIAProperty(item, WIA_VERTICAL_SCAN_SIZE_PIXELS, MilimetersToPixels(properties.VerticalSize, properties.Resolution));
-        SetWIAProperty(item, WIA_SCAN_BRIGHTNESS_PERCENTS, properties.Brightness);
-        SetWIAProperty(item, WIA_SCAN_CONTRAST_PERCENTS, properties.Contrast);
+        SetPropertiesToItem(item, properties);
         ICommonDialog dialog = new CommonDialog();
-        ImageFile imageFile = dialog.ShowTransfer(item, FORMAT_ID_JPEG, false);
+        ImageFile imageFile = dialog.ShowTransfer(item, GetImageFormatId(properties.ImageFormat), false);
         if (imageFile is null) return [];
         var bytes = imageFile.FileData.get_BinaryData();
         return bytes;
@@ -114,6 +105,32 @@ public class ScanningService {
     private static void SetWIAProperty(Item item, object propName, object propValue) {
         Property prop = item.Properties.get_Item(ref propName);
         prop.set_Value(ref propValue);
+    }
+
+
+    private static void SetPropertiesToItem(Item item, ScanProperties properties) {
+        SetWIAProperty(item, WIA_SCAN_COLOR_MODE, properties.ColorMode);
+        SetWIAProperty(item, WIA_SCAN_BITS_PER_PIXEL, properties.BitsPerPixel);
+        SetWIAProperty(item, WIA_HORIZONTAL_SCAN_RESOLUTION_DPI, properties.Resolution);
+        SetWIAProperty(item, WIA_VERTICAL_SCAN_RESOLUTION_DPI, properties.Resolution);
+        SetWIAProperty(item, WIA_HORIZONTAL_SCAN_START_PIXEL, MilimetersToPixels(properties.HorizontalStart, properties.Resolution));
+        SetWIAProperty(item, WIA_VERTICAL_SCAN_START_PIXEL, MilimetersToPixels(properties.VerticalStart, properties.Resolution));
+        SetWIAProperty(item, WIA_HORIZONTAL_SCAN_SIZE_PIXELS, MilimetersToPixels(properties.HorizontalSize, properties.Resolution));
+        SetWIAProperty(item, WIA_VERTICAL_SCAN_SIZE_PIXELS, MilimetersToPixels(properties.VerticalSize, properties.Resolution));
+        SetWIAProperty(item, WIA_SCAN_BRIGHTNESS_PERCENTS, properties.Brightness);
+        SetWIAProperty(item, WIA_SCAN_CONTRAST_PERCENTS, properties.Contrast);
+    }
+
+
+    private static string GetImageFormatId(ImageFormat imageFormat) {
+        return imageFormat switch {
+            ImageFormat.JPEG => FORMAT_ID_JPEG,
+            ImageFormat.BMP => FORMAT_ID_BMP,
+            ImageFormat.PNG => FORMAT_ID_PNG,
+            ImageFormat.GIF => FORMAT_ID_GIF,
+            ImageFormat.TIFF => FORMAT_ID_TIFF,
+            _ => FORMAT_ID_JPEG,
+        };
     }
 
 
