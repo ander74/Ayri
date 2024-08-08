@@ -49,6 +49,12 @@ public class ScanningService {
     }
 
 
+    public ScanningService(string deviceId) {
+        manager = new DeviceManager();
+        SelectScanner(deviceId);
+    }
+
+
     /// <summary>
     /// Returns a list with available scanner devices.
     /// </summary>
