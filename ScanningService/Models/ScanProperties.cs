@@ -1,4 +1,6 @@
 ﻿
+using static Ayri.ScanningService.ScanningService;
+
 namespace Ayri.ScanningService.Models;
 
 /// <summary>
@@ -10,13 +12,13 @@ public class ScanProperties {
     /// Sets or gets the image format for the scanned image.<br/>
     /// Initial value: JPEG
     /// </summary>
-    public ImageFormat ImageFormat { get; set; } = ImageFormat.JPEG;
+    public string? ImageFormatId { get; set; } = FORMAT_ID_JPEG;
 
     /// <summary>
     /// Posible values: 0=Unspecified; 1=Color; 2=Grayscale; 4=Black and white text.<br/>
     /// Initial value: 1
     /// </summary>
-    public int ColorMode { get; set; } = 1;
+    public int ColorMode { get; set; } = COLOR_MODE_COLOR;
 
     /// <summary>
     /// Leave in 24.<br/>
@@ -44,15 +46,16 @@ public class ScanProperties {
 
     /// <summary>
     /// Value in milimeters.<br/>
-    /// Initial value: 210 (A4 layout)
+    /// Initial value: 297 (A4 layout)
     /// </summary>
-    public int HorizontalSize { get; set; } = 210;
+    public int HorizontalSize { get; set; } = A4_SIZE_HORIZONTAL;
 
     /// <summary>
     /// Value in milimeters.<br/>
-    /// Initial value: 297 (A4 layout)
+    /// Initial value: 210 (A4 layout)
     /// </summary>
-    public int VerticalSize { get; set; } = 297;
+    public int VerticalSize { get; set; } = A4_SIZE_VERTICAL;
+
 
     /// <summary>
     /// Value between -1000 and 1000.<br/>
