@@ -52,4 +52,13 @@ public class ScanViewModel {
 }
 ```
 In the example above, the service is injected via constructor and then *Scanners* has populated with all available devices and if there is any device, we select the first one as selected scanner. Then, in the *Scan* method, we create a *ScanProperties* object and set some of the values leaving the others in their default values. Then we set the result of *Scan* method in a byte array. The byte array has now all the content of the image. So simple.
+### Extension methods
+**ScanningService** has an extension method to set page size values in *ScanProperties* object in one step.
+```csharp
+public void Scan() {
+	// Assuming we have a ScanProperties object called Properties.
+	Properties.SetPageSize(ScanningProperties.PageSize.A4);
+	ScannedImage = scanningService.Scan(SelectedScanner.DeviceId, ScanProperties);
+}
 
+```
