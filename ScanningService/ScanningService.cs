@@ -4,20 +4,20 @@ using WIA;
 namespace Ayri.ScanningService;
 
 /// <summary>
-/// This service helps in the scanning image process acting as intermediator between an application and the COM scanning component of Windows.
+/// This service helps in the scanning image process acting as intermediator between an application and the WIA COM scanning component of Windows.
 /// </summary>
 public class ScanningService {
 
-    const string WIA_SCAN_COLOR_MODE = "6146";
-    const string WIA_HORIZONTAL_SCAN_RESOLUTION_DPI = "6147";
-    const string WIA_VERTICAL_SCAN_RESOLUTION_DPI = "6148";
-    const string WIA_HORIZONTAL_SCAN_START_PIXEL = "6149";
-    const string WIA_VERTICAL_SCAN_START_PIXEL = "6150";
-    const string WIA_HORIZONTAL_SCAN_SIZE_PIXELS = "6151";
-    const string WIA_VERTICAL_SCAN_SIZE_PIXELS = "6152";
-    const string WIA_SCAN_BRIGHTNESS_PERCENTS = "6154";
-    const string WIA_SCAN_CONTRAST_PERCENTS = "6155";
-    const string WIA_SCAN_BITS_PER_PIXEL = "4104";
+    internal const string WIA_SCAN_COLOR_MODE = "6146";
+    internal const string WIA_HORIZONTAL_SCAN_RESOLUTION_DPI = "6147";
+    internal const string WIA_VERTICAL_SCAN_RESOLUTION_DPI = "6148";
+    internal const string WIA_HORIZONTAL_SCAN_START_PIXEL = "6149";
+    internal const string WIA_VERTICAL_SCAN_START_PIXEL = "6150";
+    internal const string WIA_HORIZONTAL_SCAN_SIZE_PIXELS = "6151";
+    internal const string WIA_VERTICAL_SCAN_SIZE_PIXELS = "6152";
+    internal const string WIA_SCAN_BRIGHTNESS_PERCENTS = "6154";
+    internal const string WIA_SCAN_CONTRAST_PERCENTS = "6155";
+    internal const string WIA_SCAN_BITS_PER_PIXEL = "4104";
 
     public const string FORMAT_ID_BMP = "{B96B3CAB-0728-11D3-9D7B-0000F81EF32E}";
     public const string FORMAT_ID_JPEG = "{B96B3CAE-0728-11D3-9D7B-0000F81EF32E}";
@@ -44,7 +44,8 @@ public class ScanningService {
     private DeviceInfo? selectedScanner;
 
     /// <summary>
-    /// Image formats supported by scanning devices.
+    /// Image formats supported by scanning devices.<br/>
+    /// ADVICE: Don't run. Always gets a BMP image.
     /// </summary>
     public enum ImageFormat {
         JPEG = 0,
@@ -75,6 +76,9 @@ public class ScanningService {
     }
 
 
+    /// <summary>
+    /// Most used page sizes in scanning.
+    /// </summary>
     public enum PageSize {
         A4,
         A5,
@@ -84,7 +88,7 @@ public class ScanningService {
     }
 
     /// <summary>
-    /// Horizontal size for page formats.
+    /// Horizontal size in milimeters for page formats.
     /// </summary>
     public enum HorizontalPageSize {
         A4 = 210,
@@ -95,7 +99,7 @@ public class ScanningService {
     }
 
     /// <summary>
-    /// Vertical size for page formats.
+    /// Vertical size in milimeters for page formats.
     /// </summary>
     public enum VerticalPageSize {
         A4 = 297,
@@ -135,6 +139,7 @@ public class ScanningService {
 
     /// <summary>
     /// Starts scanning process in the device with given id using the given properties.<br/>
+    /// ADVICE: If you select an image format other than BMP don't run. Always gets a BMP image.
     /// </summary>
     /// <param name="deviceId">Device id of the scanning device.</param>
     /// <param name="properties">Scan properties for this process.</param>
@@ -146,38 +151,12 @@ public class ScanningService {
         }
         Device device = selectedScanner.Connect();
         Item item = device.Items[1];
-        SetPropertiesToItem(item, properties);
+        item.SetProperties(properties);
         ICommonDialog dialog = new CommonDialog();
         ImageFile imageFile = dialog.ShowTransfer(item, properties.ImageFormatId, false);
         if (imageFile is null) return [];
         var bytes = imageFile.FileData.get_BinaryData();
         return bytes;
-    }
-
-
-    public static void SetPageSize(PageSize pageSize, ScanProperties properties) {
-        switch (pageSize) {
-            case PageSize.A4:
-                properties.HorizontalSize = A4_SIZE_HORIZONTAL;
-                properties.VerticalSize = A4_SIZE_VERTICAL;
-                break;
-            case PageSize.A5:
-                properties.HorizontalSize = A5_SIZE_HORIZONTAL;
-                properties.VerticalSize = A5_SIZE_VERTICAL;
-                break;
-            case PageSize.A5H:
-                properties.HorizontalSize = A5H_SIZE_HORIZONTAL;
-                properties.VerticalSize = A5H_SIZE_VERTICAL;
-                break;
-            case PageSize.A6:
-                properties.HorizontalSize = A6_SIZE_HORIZONTAL;
-                properties.VerticalSize = A6_SIZE_VERTICAL;
-                break;
-            case PageSize.A6H:
-                properties.HorizontalSize = A6H_SIZE_HORIZONTAL;
-                properties.VerticalSize = A6H_SIZE_VERTICAL;
-                break;
-        }
     }
 
 
@@ -197,23 +176,9 @@ public class ScanningService {
     /// <summary>
     /// Sets the propValue in item's property with propName name.
     /// </summary>
-    private static void SetWIAProperty(Item item, object propName, object propValue) {
+    internal static void SetWIAProperty(Item item, object propName, object propValue) {
         Property prop = item.Properties.get_Item(ref propName);
         prop.set_Value(ref propValue);
-    }
-
-
-    private static void SetPropertiesToItem(Item item, ScanProperties properties) {
-        SetWIAProperty(item, WIA_SCAN_COLOR_MODE, properties.ColorMode);
-        SetWIAProperty(item, WIA_SCAN_BITS_PER_PIXEL, properties.BitsPerPixel);
-        SetWIAProperty(item, WIA_HORIZONTAL_SCAN_RESOLUTION_DPI, properties.Resolution);
-        SetWIAProperty(item, WIA_VERTICAL_SCAN_RESOLUTION_DPI, properties.Resolution);
-        SetWIAProperty(item, WIA_HORIZONTAL_SCAN_START_PIXEL, MilimetersToPixels(properties.HorizontalStart, properties.HorizontalStart));
-        SetWIAProperty(item, WIA_VERTICAL_SCAN_START_PIXEL, MilimetersToPixels(properties.VerticalStart, properties.VerticalStart));
-        SetWIAProperty(item, WIA_HORIZONTAL_SCAN_SIZE_PIXELS, MilimetersToPixels(properties.HorizontalSize, properties.Resolution));
-        SetWIAProperty(item, WIA_VERTICAL_SCAN_SIZE_PIXELS, MilimetersToPixels(properties.VerticalSize, properties.Resolution));
-        SetWIAProperty(item, WIA_SCAN_BRIGHTNESS_PERCENTS, properties.Brightness);
-        SetWIAProperty(item, WIA_SCAN_CONTRAST_PERCENTS, properties.Contrast);
     }
 
 
@@ -235,7 +200,7 @@ public class ScanningService {
     /// <summary>
     /// Converts milimeters to pixels for given resolution.
     /// </summary>
-    private static int MilimetersToPixels(int milimeters, int resolution) {
+    internal static int MilimetersToPixels(int milimeters, int resolution) {
         var res = milimeters / 25.4m * resolution;
         return (int)Math.Round(res, 0);
     }
