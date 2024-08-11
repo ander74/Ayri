@@ -58,7 +58,7 @@ In the example above, the service is injected via constructor and then *Scanners
 public void Scan() {
 	// Assuming we have a ScanProperties object called Properties.
 	Properties.SetPageSize(ScanningProperties.PageSize.A4);
-	ScannedImage = scanningService.Scan(SelectedScanner.DeviceId, ScanProperties);
+	ScannedImage = scanningService.Scan(SelectedScanner.DeviceId, Properties);
 }
 
 ```
