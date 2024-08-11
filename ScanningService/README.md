@@ -1,6 +1,6 @@
 # Scanning Service
 **ScanningService** encapsulates the *WIA COM component* of Windows in a service.
-I made this service for my own propose. It's very simple and don't include all features of the *WIA COM component*. It only has the common features I need for scanning some images. If you need some features that I don't include, feel free to include it. Feel free to do whatever you want with this code. You can use and/or modify it in the way you want.
+I made this service for my own purpose. It's very simple and don't include all features of the *WIA COM component*. It only has the common features I need for scanning some images. If you need some features that I don't include, feel free to include it. Feel free to do whatever you want with this code. You can use and/or modify it in the way you want.
 
 The usage is very simple and intuitive. Follow these small guidelines to implement the service in your application.
 ### Include ScanningService in your application
