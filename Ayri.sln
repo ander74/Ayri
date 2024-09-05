@@ -5,7 +5,9 @@ VisualStudioVersion = 17.10.35122.118
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ayri.ScanningService", "ScanningService\Ayri.ScanningService.csproj", "{6ABAFF68-ACCD-407E-8DC6-699F76335C22}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ayri.Core", "Ayri.Core\Ayri.Core.csproj", "{F2EBC108-22F1-4FE5-B5D6-23BCF1381933}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ayri.Core", "Ayri.Core\Ayri.Core.csproj", "{F2EBC108-22F1-4FE5-B5D6-23BCF1381933}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ayri.DataProtectionService", "Ayri.DataProtectionService\Ayri.DataProtectionService.csproj", "{BB466919-8949-43F1-9627-D4667971E4AA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{F2EBC108-22F1-4FE5-B5D6-23BCF1381933}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2EBC108-22F1-4FE5-B5D6-23BCF1381933}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2EBC108-22F1-4FE5-B5D6-23BCF1381933}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB466919-8949-43F1-9627-D4667971E4AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB466919-8949-43F1-9627-D4667971E4AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB466919-8949-43F1-9627-D4667971E4AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB466919-8949-43F1-9627-D4667971E4AA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

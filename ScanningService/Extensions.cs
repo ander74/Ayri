@@ -8,7 +8,7 @@ public static class Extensions {
 
 
     /// <summary>
-    /// Sets the properties values in the given Item object.
+    /// Sets properties values in the given Item object.
     /// </summary>
     internal static void SetProperties(this Item item, ScanProperties properties) {
         SetWIAProperty(item, WIA_SCAN_COLOR_MODE, properties.ColorMode);
@@ -25,7 +25,7 @@ public static class Extensions {
 
 
     /// <summary>
-    /// Sets the horizontal and vertical sizes for a given page size.
+    /// Sets horizontal and vertical sizes for a given page size.
     /// </summary>
     public static ScanProperties SetPageSize(this ScanProperties properties, PageSize pageSize) {
         switch (pageSize) {
